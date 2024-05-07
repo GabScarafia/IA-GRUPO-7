@@ -11,3 +11,11 @@ Para el football_kit_recognizer:
 
 Guia para tensorFlow:
 https://www.tensorflow.org/tutorials/images/classification?hl=es-419
+https://www.tensorflow.org/tutorials/load_data/images?hl=es-419
+
+¿Estamos usando BackPropagation en esto?
+Supuestamente si, yo entiendo que deberia quedar algo mas explicito en codigo (seguramente usando ReLu) pero:
+"Does Keras use backpropagation?
+Keras is a high-level library for neural networks that makes building 
+and training neural networks simple and easy to do. 
+During training, the optimiser in Keras takes care of backpropagation and gradient descent automatically"

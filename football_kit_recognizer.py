@@ -48,6 +48,9 @@ def main():
     print("Clases que identifico:")
     print(class_names)
     print("----------------------------")
+
+    #Como seguir: habria que normalizar los datos y generar las distintas capas de RNA.
+    #...
 #endregion
 
 #Corro el codigo:
