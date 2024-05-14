@@ -98,7 +98,7 @@ def main():
 
 #region Entrenamiento
     #Aca se entrena el proyecto 
-    #Esto ya deberia andar si el train_dataset (region de arriba) anda
+    #Esto ya deberia andar si el validation_data (region de arriba) anda
     # epochs=1 #creo que aca va la cantidad de archivos de validacion
     # history = model.fit(
     #     train_dataset,
