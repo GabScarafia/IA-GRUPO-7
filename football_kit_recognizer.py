@@ -54,8 +54,6 @@ def main():
     print(class_names)
     print("----------------------------")
 
-    #Como seguir: habria que normalizar los datos y generar las distintas capas de RNA.
-    #...
     #NO SE QUE ES ESTO:
     AUTOTUNE = tf.data.AUTOTUNE
     train_dataset = train_dataset.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
