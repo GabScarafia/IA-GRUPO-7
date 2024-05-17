@@ -1,10 +1,11 @@
 #Imports
 import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+os.environ['PYTHONIOENCODING'] = 'utf-8'
 
+import matplotlib.pyplot as plt
 import pathlib
 from PIL import Image
-
 import tensorflow as tf
 from tensorflow import keras
 from tensorflow.keras import layers
@@ -54,19 +55,18 @@ def main():
     print(class_names)
     print("----------------------------")
 
-    #NO SE QUE ES ESTO:
+    #Preparación del dataset para el entrenamiento:
     AUTOTUNE = tf.data.AUTOTUNE
     train_dataset = train_dataset.cache().shuffle(1000).prefetch(buffer_size=AUTOTUNE)
-    #val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE) #por si tenes un dataset de validacion
-
-    normalization_layer = layers.Rescaling(1./255)
+    #normalization_layer = layers.Rescaling(1./255)
 #endregion
 
 #region RNA
     #Aca se agregan las capas de nodos de la RNA 
     num_classes = len(class_names)
     model = Sequential([
-        layers.Rescaling(1./255, input_shape=(img_height, img_width, 3)), #Esta linea esta tirando error.
+        layers.Input(shape=(img_height, img_width, 3)), 
+        layers.Rescaling(1./255),
         layers.Flatten(),
         layers.Dense(128, activation='relu'),
         layers.Dense(num_classes)
@@ -79,31 +79,50 @@ def main():
 #endregion
 
 #region Archivo de Validacion
-    #Esto no anda
-    # val_dir = pathlib.Path('Validacion')
-    # val_file = list(data_dir.glob('*.jpg'))
-    # val_dataset =  tf.keras.utils.image_dataset_from_directory(
-    #     val_dir,
-    #     image_size=(img_height, img_width),
-    #     batch_size=batch_size) #Aca en val_ds habria que armar nuestra imagen de validacion
+    val_dir = pathlib.Path('Validacion') #--> esto no encuentra nada, pq?
+    # list_dataset = tf.data.Dataset.list_files(str(val_dir/'*/*.jpg'))
+    # image_count2 = len(list(val_dir.glob('*/*.jpg')))
 
-    # #Para probar si se ve la imagen de aca
-    # image = Image.open(str(val_file[0]))
-    # image.show()
-#endregion
+    val_dataset =  tf.keras.utils.image_dataset_from_directory(
+        val_dir,
+        image_size=(img_height, img_width),
+        batch_size=batch_size)
+# endregion
 
 
 
 #region Entrenamiento
     #Aca se entrena el proyecto 
     #Esto ya deberia andar si el validation_data (region de arriba) anda
-    # epochs=1 #creo que aca va la cantidad de archivos de validacion
-    # history = model.fit(
-    #     train_dataset,
-    #     validation_data=val_dataset, 
-    #     epochs=epochs
-    # )
+    epochs=10 
+    history = model.fit(
+        train_dataset,
+        validation_data=val_dataset, 
+        epochs=epochs
+    )
+
 #endregion
 
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
+
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+
+    epochs_range = range(epochs)
+
+    plt.figure(figsize=(8, 8))
+    plt.subplot(1, 2, 1)
+    plt.plot(epochs_range, acc, label='Training Accuracy')
+    plt.plot(epochs_range, val_acc, label='Validation Accuracy')
+    plt.legend(loc='lower right')
+    plt.title('Training and Validation Accuracy')
+
+    plt.subplot(1, 2, 2)
+    plt.plot(epochs_range, loss, label='Training Loss')
+    plt.plot(epochs_range, val_loss, label='Validation Loss')
+    plt.legend(loc='upper right')
+    plt.title('Training and Validation Loss')
+    plt.show()
 #Corro el codigo:
 main()

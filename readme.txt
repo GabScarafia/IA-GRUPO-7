@@ -8,6 +8,7 @@ Video de Guia: https://www.youtube.com/watch?v=CahXWhovhKA
 
 Para el football_kit_recognizer:
 1. pip install Pillow (Pillow es una libreria para editar/ver imagenes en python)
+2. pip install matplotlib
 
 Guia para tensorFlow:
 https://www.tensorflow.org/tutorials/images/classification?hl=es-419
