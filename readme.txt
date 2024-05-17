@@ -1,3 +1,13 @@
+Remeras de equipos que vamos a analizar:
+Boca
+River
+San Lorenzo
+Independiente
+Racing
+Estudiantes
+Gimnasia
+Velez
+
 Video de Guia: https://www.youtube.com/watch?v=CahXWhovhKA
 
 1.Instalar Python: https://www.python.org/downloads/
