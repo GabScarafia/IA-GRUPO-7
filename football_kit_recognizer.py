@@ -1,5 +1,7 @@
 #Imports
 import os
+import sys
+
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['PYTHONIOENCODING'] = 'utf-8'
 
@@ -15,6 +17,9 @@ from tensorflow.keras.models import Sequential
 #Lo agrego a una funcion no pq sea necesario sino por si despues necesito definir funciones extras
 #esas funciones extras tambien podrian ir en otros archivos. (a todo caso lo cambiamos)
 def main():
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
+
     # Con esto lo que estoy intentando es tener el repositorio de imagenes a mano.
     data_dir = pathlib.Path('Imagenes')
     # Para mas tarde )? -Gaby
