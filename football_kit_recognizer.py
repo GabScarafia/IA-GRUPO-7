@@ -1,3 +1,4 @@
+# %%
 import os
 import sys
 
@@ -11,18 +12,22 @@ from PIL import Image
 import tensorflow as tf
 from tensorflow import keras
 
-sys.stdout.reconfigure(encoding='utf-8')
-sys.stderr.reconfigure(encoding='utf-8')
+#sys.stdout.reconfigure(encoding='utf-8')
+#sys.stderr.reconfigure(encoding='utf-8')
 
+size_tuple = (150,150)
+epochs = 40
+
+# %%
 categorias = []
 labels = []
 imagenes  = []
-size_tuple = (250,250)
-epochs = 35
 
+# %%
 categorias =  [archivo for archivo in os.listdir("Imagenes") if not archivo.startswith('.')]
 print(categorias)
 
+# %%
 x=0
 for directorio in categorias:
     imagenes_dir = [imagen for imagen in os.listdir('Imagenes/'+directorio) if not imagen.startswith('.')]
@@ -33,34 +38,68 @@ for directorio in categorias:
         labels.append(x)
     x += 1
 
+# %%
 print(labels)
 
+# %%
 imagenes=np.asanyarray(imagenes)
 imagenes.shape
 imagenes = imagenes[:,:,:,0]
 
+# %%
 plt.figure()
 plt.imshow(imagenes[7])
 plt.colorbar()
 plt.grid(False)
 plt.show()
 
+# %%
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=size_tuple),
     tf.keras.layers.Dense(128,activation='relu'),
-    tf.keras.layers.Dropout(0,2),
-    tf.keras.layers.Dense(10,activation='softmax')
+    tf.keras.layers.Dropout(0,25),
+    tf.keras.layers.Dense(len(categorias),activation='softmax')
 ])
 
+# %%
 model.compile(optimizer='adam',
     loss='sparse_categorical_crossentropy',
     metrics=['accuracy'])
 
+# %%
 labels = np.array(labels)
 
+# %%
 history = model.fit(imagenes, labels, epochs=epochs)
 
-imagen_prueba = "Validacion/example2.jpg"
+# %%
+correcto = 0
+incorrecto = 0
+root_dir = 'Validacion' 
+
+for subdir, dirs, files in os.walk(root_dir):
+    for file in files:
+        if not file.startswith('.'):
+            im = Image.open(os.path.join(subdir, file)).resize(size_tuple)
+            im = np.asarray(im)
+            im = im[:,:,0]
+            im = np.asarray([im])
+            test=im
+            predicciones = model.predict(test)  
+            print(categorias[np.argmax(predicciones[0])])
+            actual_categoria = os.path.basename(subdir)
+            if(categorias[np.argmax(predicciones[0])] == actual_categoria):
+                correcto += 1
+            else:
+                incorrecto += 1
+
+print('Validaciones Correctas: '+ str(correcto))
+print('Validaciones Incorrectas: '+ str(incorrecto))
+
+
+# %%
+nombre_imagen_de_prueba = os.listdir("Prediccion")[0]
+imagen_prueba = "Prediccion/" + nombre_imagen_de_prueba
 im = Image.open(imagen_prueba).resize(size_tuple)
 im = np.asarray(im)
 im = im[:,:,0]
@@ -68,18 +107,23 @@ im = np.asarray([im])
 im.shape
 test=im
 
+# %%
 prediccion = model.predict(test)  
 print(prediccion)
 
-img = Image.open(imagen_prueba)
+# %%
+img = Image.open(imagen_prueba).resize(size_tuple)
 plt.figure()
 plt.imshow(img)
 plt.show()
 
+# %%
 categorias[np.argmax(prediccion[0])]
 
+# %%
 model.summary()
 
+# %%
 acc = history.history['accuracy']
 #val_acc = history.history['val_accuracy']
 
@@ -101,3 +145,8 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 plt.show()
+
+# %%
+#tf.keras.utils.plot_model(model,to_file='rna.png', show_shapes=True,rankdir='LR')
+
+
