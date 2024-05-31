@@ -48,13 +48,6 @@ imagenes.shape
 imagenes = imagenes[:,:,:,0]
 
 # %%
-plt.figure()
-plt.imshow(imagenes[7])
-plt.colorbar()
-plt.grid(False)
-plt.show()
-
-# %%
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=size_tuple),
     tf.keras.layers.Dense(128,activation='relu'),
@@ -94,6 +87,8 @@ for subdir, dirs, files in os.walk(root_dir):
             else:
                 incorrecto += 1
 
+total=correcto+incorrecto
+porcentajeCorrecto= (correcto*100)/total
 print('Validaciones Correctas: '+ str(correcto))
 print('Validaciones Incorrectas: '+ str(incorrecto))
 
@@ -148,7 +143,7 @@ plt.title('Training and Validation Loss')
 plt.show()
 
 
-ctypes.windll.user32.MessageBoxW(0, "Validaciones correctas: "+str(correcto)+"\nValidaciones incorrecta: "+str(incorrecto)+"\nPrediccion de imagen: "+str(categorias[np.argmax(prediccion[0])]), "Resultados", 0)
+ctypes.windll.user32.MessageBoxW(0, "Validaciones correctas: "+str(correcto)+"\nValidaciones incorrecta: "+str(incorrecto)+"\nPorcentaje Correctas: "+str(porcentajeCorrecto)+"%\nPrediccion de imagen: "+str(categorias[np.argmax(prediccion[0])]), "Resultados", 0)
 # %%
 #tf.keras.utils.plot_model(model,to_file='rna.png', show_shapes=True,rankdir='LR')
 
