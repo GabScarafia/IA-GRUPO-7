@@ -5,6 +5,7 @@ import sys
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 os.environ['PYTHONIOENCODING'] = 'utf-8'
 
+import ctypes
 import matplotlib.pyplot as plt
 import pathlib
 import numpy as np
@@ -146,6 +147,8 @@ plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
 plt.show()
 
+
+ctypes.windll.user32.MessageBoxW(0, "Validaciones correctas: "+str(correcto)+"\nValidaciones incorrecta: "+str(incorrecto)+"\nPrediccion de imagen: "+str(categorias[np.argmax(prediccion[0])]), "Resultados", 0)
 # %%
 #tf.keras.utils.plot_model(model,to_file='rna.png', show_shapes=True,rankdir='LR')
 

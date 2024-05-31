@@ -14,7 +14,7 @@ Video de Guia: https://www.youtube.com/watch?v=CahXWhovhKA
 2.Fijarse las variables de entorno. (seguir el video)
 3.pip install tensorflow --upgrade en la terminal de visual studio (o en la carpeta del proyecto)
 3b. (tuve que darle permisos de administrador a visual studio para que el pip install no me tirara error)
-4.python .\prueba.py
+4.python .\football_kit_recognizer.py
 
 Para el football_kit_recognizer:
 1. pip install Pillow (Pillow es una libreria para editar/ver imagenes en python)
