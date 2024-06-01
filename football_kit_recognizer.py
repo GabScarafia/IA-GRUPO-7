@@ -51,7 +51,7 @@ imagenes = imagenes[:,:,:,0]
 model = tf.keras.models.Sequential([
     tf.keras.layers.Flatten(input_shape=size_tuple),
     tf.keras.layers.Dense(128,activation='relu'),
-    tf.keras.layers.Dropout(0,25),
+    tf.keras.layers.Dropout(0,2),
     tf.keras.layers.Dense(len(categorias),activation='softmax')
 ])
 
@@ -144,7 +144,5 @@ plt.show()
 
 
 ctypes.windll.user32.MessageBoxW(0, "Validaciones correctas: "+str(correcto)+"\nValidaciones incorrecta: "+str(incorrecto)+"\nPorcentaje Correctas: "+str(porcentajeCorrecto)+"%\nPrediccion de imagen: "+str(categorias[np.argmax(prediccion[0])]), "Resultados", 0)
-# %%
-#tf.keras.utils.plot_model(model,to_file='rna.png', show_shapes=True,rankdir='LR')
 
 
